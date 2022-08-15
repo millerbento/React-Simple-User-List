@@ -1,21 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import styles from './UserInputInfo.module.css';
 import Button from '../UI/Button';
 import ErrorModal from '../UI/ErrorModal.js';
 
 const UserInputInfo = (props) => {
-  const [userName, setUserName] = useState('');
-  const [userAge, setUserAge] = useState('');
   const [error, setError] = useState();
+
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();  
 
   const formSubmitHandler = (event) => {
     event.preventDefault();
 
-    if (userName.trim().length === 0 || userAge.trim().length === 0) {
+    const enteredUserName = nameInputRef.current.value;
+    const enteredUserAge = ageInputRef.current.value;
+
+    if (enteredUserName.trim().length === 0 || enteredUserAge.trim().length === 0) {
       return; //return will stop the form submit handler
     }
     
-    if (+userAge < 1) { //+userAge to guarantee that this variable will be a integer
+    if (+enteredUserAge < 1) { //+userAge to guarantee that this variable will be a integer
       setError({
         title: 'Invalid age',
         message: 'Please enter a valid age (> 0).',
@@ -23,20 +27,10 @@ const UserInputInfo = (props) => {
       return;
     }
 
-    props.onAdduser(userName, userAge); //sending data via props    
+    props.onAdduser(enteredUserName, enteredUserAge); //sending data via props    
 
     //reset fields after submission
     event.target.reset();
-    setUserName('');
-    setUserAge('');
-  };
-
-  const usernameInputChangeHandler = (event) => {
-    setUserName(event.target.value);
-  };
-
-  const ageInputChangeHandler = (event) => {
-    setUserAge(event.target.value);
   };
 
   const errorHandler = () => {
@@ -44,7 +38,7 @@ const UserInputInfo = (props) => {
   };  
 
   return (
-    <div>
+    <React.Fragment>
       {/* && checking if error is not null, if so, returns the error modal */}
       {error && (
         <ErrorModal
@@ -57,17 +51,16 @@ const UserInputInfo = (props) => {
           <div className={styles['user-input-wrapper']}>
               <div className={styles['user-input']}>
                   <label htmlFor='username'>Username</label>
-                  <input type='text' id='username' onChange={usernameInputChangeHandler} classplaceholder='Username'></input>
+                  <input type='text' id='username' ref={nameInputRef} classplaceholder='Username'></input>
               </div>
               <div className={styles['user-input']}>
                   <label htmlFor='age'>Age (Years)</label>
-                  <input type='number' id='age' onChange={ageInputChangeHandler} classplaceholder='Age'></input>
+                  <input type='number' id='age' ref={ageInputRef} classplaceholder='Age'></input>
               </div>
               <Button type="submit">Add User</Button>
           </div>
       </form>
-
-    </div>
+    </React.Fragment>
   );
 };
 

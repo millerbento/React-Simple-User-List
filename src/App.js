@@ -51,14 +51,14 @@ const App = (props) => {
   }
   
   return (
-    <div>
+    <React.Fragment>
       <section id="user-input-form">
         <UserInputInfo onAdduser={AddItemHandler}/>
       </section>
       <section id="users-list">
         {content}
       </section>
-    </div>
+    </React.Fragment>
   );
 }
 

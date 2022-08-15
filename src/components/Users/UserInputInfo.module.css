@@ -15,6 +15,7 @@
     font-weight: bold;
     display: block;
     margin-bottom: 0.5rem;
+    color: #3e5700;
 }
 
 .user-input input {
@@ -46,4 +47,4 @@
     .user-input-wrapper{
         width: 250px;
     }
-  }
+}
