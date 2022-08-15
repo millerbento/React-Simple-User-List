@@ -1,0 +1,16 @@
+.user-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+.user-item {
+    margin: 1rem 0;
+    background: #f6fce7;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+    color: #445f01;
+    text-align: center;
+    padding: 1rem 2rem;
+    cursor: pointer;
+    font-size: 13px;
+}

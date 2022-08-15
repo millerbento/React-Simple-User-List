@@ -1,60 +1,65 @@
 import React, { useState } from 'react';
+import UserInputInfo from "./components/Users/UserInputInfo";
+import UsersList from "./components/Users/UsersList";
 
-import CourseGoalList from './components/CourseGoals/CourseGoalList/CourseGoalList';
-import CourseInput from './components/CourseGoals/CourseInput/CourseInput';
-import './App.css';
 
-const App = () => {
-  const [courseGoals, setCourseGoals] = useState([
-    { text: 'Do all exercises!', id: 'g1' },
-    { text: 'Finish the course!', id: 'g2' }
-  ]);
+const App = (props) => {
 
-  const addGoalHandler = enteredText => {
-    setCourseGoals(prevGoals => {
-      const updatedGoals = [...prevGoals];
-      //The unshift() method adds one or more elements to the beginning of an array 
-      //and returns the new length of the array.      
-      updatedGoals.unshift({ text: enteredText, id: Math.random().toString() });
-      return updatedGoals;
+  const initialListofUsers = [
+    {
+      id: 'initial1',
+      text: 'Jonh Emerson (33 Years Old)',
+    },
+    {
+      id: 'initial2',
+      text: 'Valentina Clark (30 Years Old)',
+    },
+  ];
+  
+  const [ListofUsers, setListOfUsers] = useState(initialListofUsers);
+
+  const AddItemHandler = (userName, userAge) => {
+    const newList = ListofUsers.concat({
+      text: userName + " ( " + userAge + " Years Old)",
+      id: Math.random().toString(),
+    });
+
+    setListOfUsers(newList);
+  };
+
+  // Using state to delete and add users
+  const DeleteItemHandler = userId => {
+    setListOfUsers( prevUsers => {
+      // .filter loops through an array including or excluding elements 
+      // inside that array based on a provided condition
+      const updateUsers = prevUsers.filter(user => user.id !== userId);
+      return updateUsers;
     });
   };
 
-  const deleteItemHandler = goalId => {
-    setCourseGoals(prevGoals => {
-      // !== is used to compare both value & type of 2 operands that are being compared to each other
-      const updatedGoals = prevGoals.filter(goal => goal.id !== goalId);
-      return updatedGoals;
-    });
-  };
-
+  // Checking if there are values to be shown before returing it
   let content = (
-    <p style={{ textAlign: 'center' }}>No goals found. Maybe add one?</p>
-  );
-
-  if (courseGoals.length > 0) {
-    content = (
-      <CourseGoalList items={courseGoals} onDeleteItem={deleteItemHandler} />
+    <div>
+      <p style={{ textAlign: 'center', fontWeight: 'bold' }}>No users found</p>
+      <p style={{ textAlign: 'center' }}>You can add an user using the form above</p>
+    </div>
+  );  
+  if (ListofUsers.length > 0) {
+    content  = (
+      <UsersList items={ListofUsers} onDeleteItem={DeleteItemHandler} />
     );
   }
-
+  
   return (
     <div>
-      <section id="goal-form">
-        <CourseInput onAddGoal={addGoalHandler} />
+      <section id="user-input-form">
+        <UserInputInfo onAdduser={AddItemHandler}/>
       </section>
-      <section id="goals">
+      <section id="users-list">
         {content}
-        {/* {courseGoals.length > 0 && (
-          <CourseGoalList
-            items={courseGoals}
-            onDeleteItem={deleteItemHandler}
-          />
-        ) // <p style={{ textAlign: 'center' }}>No goals found. Maybe add one?</p>
-        } */}
       </section>
     </div>
   );
-};
+}
 
 export default App;
